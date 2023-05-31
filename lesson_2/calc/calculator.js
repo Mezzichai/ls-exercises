@@ -1,7 +1,4 @@
-// prompt for the first and then second number
-// prompt for operation
-// perform calculations
-// print result
+const messages = require('./calcMessage.json')
 const readline = require("readline-sync");
 
 function prompt(message) {
@@ -12,7 +9,7 @@ function invalidNumber(number) {
   return number.trimStart() === '' || Number.isNaN(Number(number));
 }
 
-prompt("Welcome to Calclulator!");
+prompt(messages.welcome);
 
 let continuesLoop = true
 
@@ -21,7 +18,7 @@ while (continuesLoop === true) {
   let number1 = readline.question();
   
   while (invalidNumber(number1)) {
-    prompt("Hmm... that doesn't look like a valid number.");
+    prompt(messages.invalidNum);
     number1 = readline.question();
   }
   
@@ -29,7 +26,7 @@ while (continuesLoop === true) {
   let number2 = readline.question();
   
   while (invalidNumber(number2)) {
-    prompt("Hmm... that doesn't look like a valid number.");
+    prompt(messages.invalidNum);
     number2 = readline.question();
   }
   
@@ -38,7 +35,7 @@ while (continuesLoop === true) {
   
   
   while (!['1','2','3','4'].includes(operation)) {
-    prompt("Enter a number that is 1-4");
+    prompt(messages.invalidOp);
     operation = readline.question();
   }
   
@@ -62,7 +59,7 @@ while (continuesLoop === true) {
 
   prompt("Would you like to make another calculation?\ntype N if you want to stop");
   let loop = readline.question();
-  if (loop.toLowerCase() === "n") {
+  if (loop[0].toLowerCase() === "n") {
     continuesLoop = false
   }
 }
