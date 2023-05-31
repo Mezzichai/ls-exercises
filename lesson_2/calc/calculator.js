@@ -9,8 +9,15 @@ function invalidNumber(number) {
   return number.trimStart() === '' || Number.isNaN(Number(number));
 }
 
-prompt(messages.welcome);
 
+
+prompt("What langauge do you speak?")
+let langauge = readline.question();
+if (langauge[0].toLowerCase() === 's') {
+  langauge = messages.Spanish
+} else {langauge = messages.English}
+
+prompt(langauge.welcome);
 let continuesLoop = true
 
 while (continuesLoop === true) {
@@ -18,7 +25,7 @@ while (continuesLoop === true) {
   let number1 = readline.question();
   
   while (invalidNumber(number1)) {
-    prompt(messages.invalidNum);
+    prompt(langauge.invalidNum);
     number1 = readline.question();
   }
   
@@ -26,7 +33,7 @@ while (continuesLoop === true) {
   let number2 = readline.question();
   
   while (invalidNumber(number2)) {
-    prompt(messages.invalidNum);
+    prompt(langauge.invalidNum);
     number2 = readline.question();
   }
   
@@ -35,7 +42,7 @@ while (continuesLoop === true) {
   
   
   while (!['1','2','3','4'].includes(operation)) {
-    prompt(messages.invalidOp);
+    prompt(langauge.invalidOp);
     operation = readline.question();
   }
   
