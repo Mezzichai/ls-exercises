@@ -100,3 +100,4 @@ while (anotherGame) {
 
   anotherGame = wantsToPlayAgain();
 }
+
