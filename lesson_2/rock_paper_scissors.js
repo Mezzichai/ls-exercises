@@ -1,13 +1,18 @@
 const readline = require("readline-sync");
 
 function winner(user, computer) {
-  if ((user === "rock" && computer === "scissors") ||
-      (user === "scissors" && computer === "paper") || 
-      (user === "paper" && computer === "rock")) {
+  if ((user === "rock" && (computer === "scissors" || computer === "lizard")) ||
+      (user === "scissors" && (computer === "paper" || computer === "lizard")) || 
+      (user === "paper" && (computer === "rock" || computer === "spock")) || 
+      (user === "spock" && (computer === "rock" || computer === "scissors")) ||
+      (user === "lizard" && (computer === "spock" || computer === "paper"))
+      ) {
   prompt("You win");
-  } else if ((user === 'rock' && computer === 'paper') ||
-             (user === 'paper' && computer === 'scissors') ||
-             (user === 'scissors' && computer === 'rock')) {
+  } else if ((computer === "rock" && (user === "scissors" || user === "lizard")) ||
+             (computer === "scissors" && (user === "paper" || user === "lizard")) || 
+             (computer === "paper" && (user === "rock" || user === "spock")) || 
+             (computer === "spock" && (user === "rock" || user === "scissors")) ||
+             (computer === "lizard" && (user === "spock" || user === "paper"))) {
   prompt('You lose');
   };
 };
@@ -18,7 +23,7 @@ function prompt(message) {
 
 
 
-OPTIONS = ["rock", "paper", "scissors"];
+OPTIONS = ["rock", "paper", "scissors", "spock", "lizard"];
 
 let anotherGame = true;
 
@@ -34,13 +39,6 @@ while (anotherGame) {
     while (!OPTIONS.includes(userChoice)) {
       prompt("That's not a valid choice");
       userChoice = readline.question();
-    };
-    if (userChoice[0].toLowerCase() === "r") {
-      userChoice = "rock";
-    } else if (userChoice[0].toLowerCase() === "p") {
-      userChoice = "paper";
-    } else {
-      userChoice = "scissors";
     };
 
     computerChoice = OPTIONS[Math.floor(Math.random()* OPTIONS.length)];
