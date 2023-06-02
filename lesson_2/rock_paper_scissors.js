@@ -23,7 +23,8 @@ function prompt(message) {
 
 
 
-OPTIONS = ["rock", "paper", "scissors", "spock", "lizard"];
+const OPTIONS = ["rock", "paper", "scissors", "spock", "lizard"];
+const AbrevOPTIONS = ["r", "p", "sc", "sp", "l"];
 
 let anotherGame = true;
 
@@ -37,9 +38,20 @@ while (anotherGame) {
     userChoice = readline.question();
 
     while (!OPTIONS.includes(userChoice)) {
-      prompt("That's not a valid choice");
-      userChoice = readline.question();
+      if (userChoice[0] === "r") {
+        userChoice = "rock"
+      } else if (userChoice[0] === "p") {
+        userChoice = "paper"
+      } else if (userChoice[0] === "s" && userChoice[1] === "p") {
+        userChoice = "spock"
+      } else if (userChoice[0] === "s" && userChoice[1] === "c") {
+        userChoice = "scissors"
+      } else {
+        prompt("That's not a valid choice");
+        userChoice = readline.question();
+      }
     };
+    
 
     computerChoice = OPTIONS[Math.floor(Math.random()* OPTIONS.length)];
 
