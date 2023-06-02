@@ -33,7 +33,7 @@ while (true) {
     prompt("enter a positive number");
     years = parseInt(readline.question());
   }
-
+ 
 
   let monthlyInterestRate = APR / 12;
   let loanDurationMonths = years * 12;
