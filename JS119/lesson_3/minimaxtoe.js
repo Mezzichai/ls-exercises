@@ -61,64 +61,71 @@ function listPositions(board) {
 }
 
 
-function findWinOrDefense(board) {
+function minimax(board, depth, maximisingPlayer) {
+  let result = isWinning(board)
+  if (result === "player") return -1
+  else if (result === "computer") return 1
+  else if (isTie(board)) return 0
+  
 
-  let twoInARow = winningPositions.filter(positions => {
-    let filteredForTwo = positions.filter(([row, col]) => {
-      return "XO".includes(board[row][col])
-    });
-
-    if (filteredForTwo.length < 2) return false
-    return (
-           filteredForTwo.every(([row,col]) => board[row][col] === "O") || 
-           filteredForTwo.every(([row,col]) => board[row][col] === "X")
-        )
-  })
-
-  let takingPositions = twoInARow.filter(elem => {
-    return elem.some(([row, column]) => {
-      return board[row][column] === "O"
-    })
-  })
-
-  let blockingPositions = twoInARow.filter(elem => {
-    return elem.some(([row, column]) => {
-      return board[row][column] === "X"
-    })
-  })
-//using the .find higher order method would have been simpler
-  if (0 < takingPositions.length) {
-    return takingPositions.shift().filter(elem => {
-      return board[elem[0]][elem[1]] === " "
-    })
-  } else if (0 < blockingPositions.length) {
-    return blockingPositions.shift().filter(elem => {
-      return board[elem[0]][elem[1]] === " "
-    })
-  }
-  return false
+  if (maximisingPlayer) {
+  let highestScore = -Infinity
+  availablePositions(board).forEach(([row, col]) => {
+      board[row][col] = "O"
+      let newHighScore = minimax(board, depth + 1, false)
+      board[row][col] = " "
+      highestScore = Math.max(highestScore, newHighScore)
+   } 
+  )
+  return highestScore
+  } else {
+    let lowestScore = Infinity
+    availablePositions(board).forEach(([row, col]) => {
+        board[row][col] = "X"
+        let newLowScore = minimax(board, depth + 1, true)
+        board[row][col] = " "
+        lowestScore = Math.min(lowestScore, newLowScore)
+     } 
+    )
+    return lowestScore
+    }
 }
 
-
+function bestMove(board) {
+  if (board[1][1] === " ") {
+    return [1, 1]
+  }
+  let highestScore = -Infinity;
+  let position;
+  availablePositions(board).forEach(([row, col]) => {
+    console.log(row, col)
+    board[row][col] = "O"
+    let score = minimax(board, 0, false)
+    board[row][col] = " "
+    if (score > highestScore) {
+      highestScore = score
+      position = [row, col]
+    }
+  })
+  return position
+}
 
 function computerTurn(board) {
   let position = []
 
-    if (findWinOrDefense(board)) {
-      let positionToTake = findWinOrDefense(board)
-      console.log(positionToTake)
-      let takingPosition = positionToTake[Math.floor(Math.random() * positionToTake.length)]
-      position.push(takingPosition[0], takingPosition[1])
-      board[position[0]][position[1]] = "O"
-    } else if (board[1][1] === " ") {   
-      board[1][1] = "O"
+    if (bestMove(board)) {
+      let positionToTake = bestMove(board)
+      position.push(positionToTake[0], positionToTake[1])
+      // let positionToTake = findWinOrDefense(board)
+      // console.log(positionToTake)
+      // let takingPosition = positionToTake[Math.floor(Math.random() * positionToTake.length)]
+      // position.push(takingPosition[0], takingPosition[1])
     } else {
       let available = availablePositions(board)
       let spaces = available[Math.floor(Math.random() * available.length)]
       position.push(...spaces)
-
-      board[position[0]][position[1]] = "O"
     }    
+    board[position[0]][position[1]] = "O"
   }
 
   function playerTurn(board) {
@@ -213,7 +220,7 @@ while (true) {
   let compScore = 0;
 
   let whoseTurn = readline.question('Who will go first? \n computer or player or random? ')
-  if (whoseTurn === "random") {
+  if (whoseTurn !== PLAYER && whoseTurn !== COMPUTER) {
     let choice = Math.floor(Math.random() * 2)
     if (choice === 1) {
       whoseTurn = PLAYER
@@ -222,7 +229,7 @@ while (true) {
     }
   }
   while (playerScore + compScore < 5) {
-    prompt(`Game ${playerScore + compScore} / 5`)
+    prompt(`Game ${playerScore + compScore + 1} / 5`)
 
    
 
